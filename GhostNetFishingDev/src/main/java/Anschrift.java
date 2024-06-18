@@ -7,7 +7,7 @@ public class Anschrift
 {
     private String name = "Filzprodukte Zander GmbH";
 
-    private String strasse = "Märkische Straße";
+    private String strasse = "Mainzer Landstraße";
 
     private int hausnummer = 15;
 
