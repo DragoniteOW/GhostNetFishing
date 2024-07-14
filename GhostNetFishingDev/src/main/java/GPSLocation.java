@@ -5,7 +5,10 @@ import jakarta.persistence.Id;
 @Entity
 public class GPSLocation
 {
-	private double altitude;
+	// one easy format of GPS Locations is "Decimal Degrees" or "DD", which consists of 2 numbers
+	// latitude and longitude. We use double as a datatype to allow for better accuracy, which may 
+	// be needed on deep sea operations
+	private double latitude;
 	private double longitude;
 	
 	@Id
@@ -14,13 +17,13 @@ public class GPSLocation
 	
 	public GPSLocation()
 	{
-		altitude = 0;
+		latitude = 0;
 		longitude = 0;
 	}
 	
 	public GPSLocation(int nr, double alt, double lng)
 	{
-		this.altitude = alt;
+		this.latitude = alt;
 		this.setLongitude(lng);
 	}
 	
@@ -32,12 +35,12 @@ public class GPSLocation
 		this.nr = nr;
 	}
 
-	public double getAltitude() {
-		return altitude;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 	public double getLongitude() {
@@ -48,9 +51,10 @@ public class GPSLocation
 		this.longitude = longitude;
 	}
 	
+	// Decimal Degrees may only be between -90 and 90 in latitude, and -180 to 180 in longitude
 	public Boolean isValid()
 	{
-		if(altitude < -90 || altitude > 90)
+		if(latitude < -90 || latitude > 90)
 			return false;
 		if(longitude <-180 || longitude > 180)
 			return false;

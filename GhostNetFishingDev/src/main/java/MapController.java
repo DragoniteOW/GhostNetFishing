@@ -23,8 +23,6 @@ public class MapController implements Serializable
 	@Inject
 	GhostNetDAO ghostNetDAO;
 	
-	//TODO move init from DAO
-	
 	public MapController()
 	{
 		
@@ -35,7 +33,7 @@ public class MapController implements Serializable
 		return marker;
 	}
 
-    
+    // adds Markers as an Overlay to our map model
     public MapModel initMapModel()
     {
     	for(GhostNet net: ghostNetDAO.getGhostNets())
@@ -43,13 +41,14 @@ public class MapController implements Serializable
     		Status status = net.getStatus();
     		if (status==Status.GEMELDET || status==Status.BERGUNG_BEVORSTEHEND)
     		{
-    			LatLng latlng = new LatLng(net.getStandort().getAltitude(), net.getStandort().getLongitude());
+    			LatLng latlng = new LatLng(net.getStandort().getLatitude(), net.getStandort().getLongitude());
     			mapModel.addOverlay(new Marker(latlng, GhostNetController.getTitle(net)));
     		}
     	}
     	return mapModel;
     }
 	
+    // handles the event that the user clicks on a map marker
 	public void onMarkerSelect(OverlaySelectEvent event)
 	{
 	    	marker = (Marker) event.getOverlay();

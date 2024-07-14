@@ -1,14 +1,10 @@
-
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Named
@@ -31,6 +27,8 @@ public class GhostNet
 	private Person meldendePerson = null;
 	
 	private Status status;
+	
+	// Konstruktoren
 	
 	public GhostNet()
 	{
@@ -58,6 +56,8 @@ public class GhostNet
 		this.bergendePerson = bergendeP;
 	}
 	
+	// status checks
+	
 	public boolean needsBergendePerson()
 	{
 		return (this.status == Status.BERGUNG_BEVORSTEHEND || this.status == Status.GEBORGEN);
@@ -72,6 +72,8 @@ public class GhostNet
 	{
 		return this.status == Status.GEMELDET;
 	}
+	
+	// getters & setters
 	
 	public int getNr() {
 		return nr;

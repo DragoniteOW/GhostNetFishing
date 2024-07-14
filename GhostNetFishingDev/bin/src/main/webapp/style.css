@@ -24,12 +24,35 @@ error {
     height: 130px;
 }
 
+/*
+table#artikel {
+        width: 95%;
+        background-color: lightgrey;
+        margin-left:30px;
+        border-spacing: 23px;
+        border: inset 1px;
+}
 
+table#artikel th {
+        color: white;
+        background-color: black;
+        font-size:120%;
+}
+
+table#artikel td {
+        font-variant: small-caps;
+        border: inset 1px;
+}
+
+td.spalte1 {
+        background-color: lightblue;
+}
+*/
 p#fussnote {
     font-size: 0.7em;
 }
 
-table.net {
+table.artikel {
     border-collapse: collapse;
 }
 

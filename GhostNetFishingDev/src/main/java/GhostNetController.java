@@ -29,28 +29,20 @@ public class GhostNetController implements Serializable
     
     @Inject
     MapController mapController;
-
     
-    public GhostNet getNewGhostNet() {
-    	return newGhostNet;
-    }
-    
-    public GhostNet getCurrentNet()
-    {
-    	return currentNet;
-    }
-    
+    // swap to new entry page
     public String erfassen()
     {
     	return "erfassen.xhtml?faces-redirect=true";
     }
     
+    // get formatted "title" string of a GhostNet, like a description
     public static String getTitle(GhostNet net)
     {
     	String title = "Nr. ";
     	title += net.getNr();
     	title += " - Latitude: ";
-    	title += net.getStandort().getAltitude();
+    	title += net.getStandort().getLatitude();
     	title += " Longitude: ";
     	title += net.getStandort().getLongitude();
     	title += " - Status: ";
@@ -68,6 +60,7 @@ public class GhostNetController implements Serializable
     	return title;
     }
     
+    // initialize and swap to edit page
     public String edit(GhostNet net)
     {
     	currentNet = new GhostNet(net.getNr(), net.getStandort(), net.getGröße(), net.getStatus(), net.getMeldendePerson(), net.getBergendePerson());
@@ -76,6 +69,7 @@ public class GhostNetController implements Serializable
     	return "edit.xhtml?faces-redirect=true";
     }
     
+    // initialize or use already set Person
     public void initMeldendePerson()
     {
     	if(currentNet == null || currentNet.getMeldendePerson() == null)
@@ -84,6 +78,7 @@ public class GhostNetController implements Serializable
     		this.meldendePerson = currentNet.getMeldendePerson();
     }
     
+    // initialize or use already set Person
     public void initBergendePerson()
     {
     	if(currentNet.getBergendePerson() == null)
@@ -92,20 +87,19 @@ public class GhostNetController implements Serializable
     		this.bergendePerson = currentNet.getBergendePerson();
     }
     
+    // swap back to homepage
     public String übersicht()
     {
     	return "index.xhtml?faces-redirect=true";
     }
     
+    // swap to Google Maps overview
     public String mapView()
     {
     	return "mapview.xhtml?faces-redirect=true";
     }
-
-    public void removeGhostNet() {
-       //to do
-    }
     
+    // initialize new GhostNet and return its index
     public int createNewGhostNet() 
     {
     	GhostNet n = new GhostNet();
@@ -116,12 +110,14 @@ public class GhostNetController implements Serializable
     	return newNr;
     }
     
+    // check validity of any given GhostNet
     public static boolean isValidGhostNet(GhostNet n)
     {
     	return (n.getNr() != 0 && n.getStandort() != null && n.getStatus() != null && n.getGröße() != 0);
     	
     }
     
+    // validator for UI Input: phone number
     public void validatePhoneNumber(FacesContext context, UIComponent component,
             Object value) throws ValidatorException {
     	
@@ -139,6 +135,7 @@ public class GhostNetController implements Serializable
 
     }
     
+    // validator for UI Input: GPS Location in Decimal Degrees
     public void validateLocation(FacesContext context, UIComponent component,
             Object value) throws ValidatorException {
     	
@@ -155,6 +152,7 @@ public class GhostNetController implements Serializable
 
     }
     
+    // validator for UI Input: Name (check for disallowed signs)
     public void validateName(FacesContext context, UIComponent component,
     		Object value) throws ValidatorException {
     	
@@ -171,13 +169,14 @@ public class GhostNetController implements Serializable
         }
     }
     
-    
-    
+    // when a GhostNet is GEBORGEN, it may no longer be edited. This checks
+    // that for any given GhostNet
     public boolean isDone(GhostNet n)
     {
     	return (n.getStatus() == Status.GEBORGEN);
     }
     
+    // saves a new GhostNet entry, accessing the DAO
     public String saveNewGhostNet()
     {
     	if(isValidGhostNet(newGhostNet))
@@ -196,6 +195,7 @@ public class GhostNetController implements Serializable
     		return "";
     }
     
+    // saves our edited GhostNet and sets the appropriate Personen
     public String saveCurrentGhostNet()
     {
     	if(isValidGhostNet(currentNet))
@@ -230,6 +230,7 @@ public class GhostNetController implements Serializable
     		return "";
     }
     
+    // returns a formatted string of a Person
     public String getDisplayNameBergend(Person p)
 	{
 		if(p == null)
@@ -240,6 +241,7 @@ public class GhostNetController implements Serializable
 		return p.getFirstName() + " " + p.getLastName() + ", " + p.getTelNr();
 	}
     
+    // returns a formatted string of a Person
     public String getDisplayNameMeldend(Person p)
 	{
 		if(p == null || !p.isValid())
@@ -259,19 +261,7 @@ public class GhostNetController implements Serializable
 		return s;
 	}
     
-    public String updateGhostNet()
-    {
-    	if(isValidGhostNet(newGhostNet))
-    	{
-    		System.err.println("Updating and saving GhostNet Nr. " + newGhostNet.getNr());
-            EntityTransaction t = ghostNetDAO.getAndBeginTransaction();
-            ghostNetDAO.merge(newGhostNet);
-            t.commit();
-    		return "index.xhtml?faces-redirect=true";
-    	}
-    	else
-    		return "";
-    }
+    // getters & setters
 
 	public Person getMeldendePerson() {
 		return meldendePerson;
@@ -288,4 +278,20 @@ public class GhostNetController implements Serializable
 	public void setBergendePerson(Person bergendePerson) {
 		this.bergendePerson = bergendePerson;
 	}
+	
+	public GhostNet getNewGhostNet() {
+    	return newGhostNet;
+    }
+	
+	public void setNewGhostNet(GhostNet n) {
+		newGhostNet = n;
+	}
+    
+    public GhostNet getCurrentNet() {
+    	return currentNet;
+    }
+    
+    public void setCurrentNet(GhostNet n) {
+    	currentNet = n;
+    }
 }

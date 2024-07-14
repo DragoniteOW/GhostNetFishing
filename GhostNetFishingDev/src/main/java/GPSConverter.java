@@ -29,7 +29,7 @@ public class GPSConverter implements Converter<Object> {
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) 
     {
         GPSLocation location = (GPSLocation)o;
-        String s = String.valueOf(location.getAltitude()) + ", " + String.valueOf(location.getLongitude());
+        String s = String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude());
         return s;
     }
 }
