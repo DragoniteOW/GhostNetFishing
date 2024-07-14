@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+  <link rel="stylesheet" type="text/css" media="screen" href="style.css"/>
+  <title>Ghost Net Bearbeitung</title>
+</h:head>
+<h:body>
+  <p><img id="kopf_links" src="ghostnet.jpg" width="250" alt="Logo"/></p>
+  <p id="kopf_rechts">
+    <h:outputText value="Christopher Schwiewager"/>
+    <br/>
+    <h:outputText value="Fallbeispiel IPWA02-01"/>
+    <br/>
+    <h:outputText value="Matrikel Nummer: 123456"/>
+  </p>
+  <h1>Ghost Net Fishing</h1>
+  <h2>Status bearbeiten</h2>
+  <h:form>
+  
+  	<h:commandButton action="#{ghostNetController.übersicht}" value="Abbrechen" immediate="true"/>
+	  
+	<p/>
+	
+    <h:panelGrid columns="2" >
+     
+      <h:outputLabel value="Nr: " for="nr"/>
+      <h:outputText id="nr" value="#{ghostNetController.currentNet.nr}"/>
+
+
+      <h:outputLabel value="Standort: " for="standort"/>
+      <h:outputText id="standort" value="#{ghostNetController.currentNet.standort}" size="40" required="true">
+      	<f:converter converterId="GPSConverter"/>
+	  </h:outputText>
+
+      <h:outputLabel value="geschätzte Größe in Meter: " for="größe"/>
+      <h:outputText id="größe" value="#{ghostNetController.currentNet.größe}" size="20"/>
+
+      <h:outputLabel value="Status: " for="status"/>
+      <p:selectOneMenu value="#{ghostNetController.currentNet.status}" id="status" converter="#{statusConverter}">
+        <f:selectItem itemLabel="Gemeldet" itemValue="GEMELDET"/>
+        <f:selectItem itemLabel="Bergung bevorstehend" itemValue="BERGUNG_BEVORSTEHEND"/>
+        <f:selectItem itemLabel="Geborgen" itemValue="GEBORGEN"/>
+        <f:selectItem itemLabel="Verschollen" itemValue="VERSCHOLLEN"/>
+        <f:ajax render="bergPersGroup meldPersGroup optPersGroup"/>
+      </p:selectOneMenu>
+      <h:message for="status" styleClass="error"/>
+    </h:panelGrid>
+    <p/>
+    
+    	<p/>
+   <h:panelGroup id="bergPersGroup">
+  	<h:panelGroup rendered="#{ghostNetController.currentNet.needsBergendePerson()}">
+  Bergende Person eintragen:
+  
+	  <h:panelGrid columns="3">
+	     
+	     <h:outputLabel value="Vorname: " for="b_vorname"/>
+	     <h:inputText id="b_vorname" value="#{ghostNetController.bergendePerson.firstName}" size="40" required="#{ghostNetController.currentNet.needsBergendePerson()}" requiredMessage="Erforderliches Feld" validator="#{ghostNetController.validateName}"/> 
+	     <h:message for="b_vorname" style="color: red"/>
+	
+	     <h:outputLabel value="Nachname: " for="b_nachname"/>
+	     <h:inputText id="b_nachname" value="#{ghostNetController.bergendePerson.lastName}" size="40" required="#{ghostNetController.currentNet.needsBergendePerson()}" requiredMessage="Erforderliches Feld" validator="#{ghostNetController.validateName}"/>
+	     <h:message for="b_nachname" style="color: red"/>
+	
+	     <h:outputLabel value="Telefonnummer: " for="b_telNr"/>
+	     <h:inputText id="b_telNr" value="#{ghostNetController.bergendePerson.telNr}" size="40" required="#{ghostNetController.currentNet.needsBergendePerson()}" requiredMessage="Erforderliches Feld" validator="#{ghostNetController.validatePhoneNumber}"/>
+	     <h:message for="b_telNr" style="color: red"/>
+	     
+	    </h:panelGrid>
+    
+ 	 </h:panelGroup>
+  	</h:panelGroup>
+  	
+  	<h:panelGroup id="meldPersGroup">
+  	<h:panelGroup rendered="#{ghostNetController.currentNet.isVerschollen()}">
+  Meldende Person erforderlich:
+  
+	  <h:panelGrid columns="3">
+	     
+	     <h:outputLabel value="Vorname: " for="m_vorname"/>
+	     <h:inputText id="m_vorname" value="#{ghostNetController.meldendePerson.firstName}" size="40" required="#{ghostNetController.currentNet.isVerschollen()}" requiredMessage="Erforderliches Feld" validator="#{ghostNetController.validateName}"/> 
+	     <h:message for="m_vorname" style="color: red"/>
+	
+	     <h:outputLabel value="Nachname: " for="m_nachname"/>
+	     <h:inputText id="m_nachname" value="#{ghostNetController.meldendePerson.lastName}" size="40" required="#{ghostNetController.currentNet.isVerschollen()}" requiredMessage="Erforderliches Feld" validator="#{ghostNetController.validateName}"/>
+	     <h:message for="m_nachname" style="color: red"/>
+	
+	     <h:outputLabel value="Telefonnummer: " for="m_telNr"/>
+	     <h:inputText id="m_telNr" value="#{ghostNetController.meldendePerson.telNr}" size="40" required="#{ghostNetController.currentNet.isVerschollen()}" requiredMessage="Erforderliches Feld" validator="#{ghostNetController.validatePhoneNumber}"/>
+	     <h:message for="m_telNr" style="color: red"/>
+	     
+	    </h:panelGrid>
+    
+ 	 </h:panelGroup>
+  	</h:panelGroup>
+  	
+  	<h:panelGroup id="optPersGroup">
+  	<h:panelGroup rendered="#{ghostNetController.currentNet.isGemeldet()}">
+  Meldende Person optional:
+  
+	  <h:panelGrid columns="3">
+	     
+	     <h:outputLabel value="Vorname: " for="o_vorname"/>
+	     <h:inputText id="o_vorname" value="#{ghostNetController.meldendePerson.firstName}" size="40" validator="#{ghostNetController.validateName}"/> 
+	     <h:message for="o_vorname" style="color: red"/>
+	
+	     <h:outputLabel value="Nachname: " for="o_nachname"/>
+	     <h:inputText id="o_nachname" value="#{ghostNetController.meldendePerson.lastName}" size="40" validator="#{ghostNetController.validateName}"/>
+	     <h:message for="o_nachname" style="color: red"/>
+	
+	     <h:outputLabel value="Telefonnummer: " for="o_telNr"/>
+	     <h:inputText id="o_telNr" value="#{ghostNetController.meldendePerson.telNr}" size="40" validator="#{ghostNetController.validatePhoneNumber}"/>
+	     <h:message for="o_telNr" style="color: red"/>
+	     
+	    </h:panelGrid>
+    
+ 	 </h:panelGroup>
+  	</h:panelGroup>
+	  
+	<p/>
+    
+    <h:commandButton action="#{ghostNetController.saveCurrentGhostNet}" value="Speichern" />
+    
+  </h:form>
+  <p id="fussnote">Bitte beachten Sie: <br/> Diese Seite ist nur ein Entwurf!</p>
+</h:body>
+</html>

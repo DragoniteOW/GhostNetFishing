@@ -56,5 +56,40 @@
       <artifactId>weld-servlet-core</artifactId>
       <version>4.0.2.Final</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>11.0.0</version>
+      <classifier>jakarta</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.languagetool</groupId>
+      <artifactId>language-de</artifactId>
+      <version>6.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derbyclient</artifactId>
+      <version>10.17.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.2.24.Final</version>
+    </dependency>
+    
+    <dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>8.0.28</version>
+	</dependency>
+	
+    
   </dependencies>
+  
+    
 </project>

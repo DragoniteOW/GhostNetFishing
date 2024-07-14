@@ -1,66 +1,69 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
   <link rel="stylesheet" type="text/css" media="screen" href="style.css"/>
-  <title>Artikelverwaltung</title>
+  <title>Ghost Net Fishing</title>
 </h:head>
 <h:body>
-  <p><img id="kopf_links" src="logo.jpg" width="250" alt="Logo"/></p>
+  <p><img id="kopf_links" src="ghostnet.jpg" width="250" alt="Logo"/></p>
   <p id="kopf_rechts">
     <h:outputText value="Christopher Schwiewager"/>
     <br/>
-    <h:outputText value="#{anschrift.strasse} #{anschrift.hausnummer}"/>
+    <h:outputText value="Fallbeispiel IPWA02-01"/>
     <br/>
-    <h:outputText value="#{anschrift.plz} #{anschrift.ort}"/>
+    <h:outputText value="Matrikel Nummer: 123456"/>
   </p>
-  <h1>Artikelverwaltung</h1>
-  <h2>Übersicht über alle Artikel</h2>
-  <h:dataTable var="artikel" value="#{shop.sortiment}"
-               styleClass="artikel" rowClasses="ungerade, gerade"
-               columnClasses="nr">
-    <h:column>
-      <f:facet name="header">Nr</f:facet>
-      <h:outputText value="#{artikel.nr}"/>
-    </h:column>
-    <h:column>
-      <f:facet name="header">Name</f:facet>
-      <h:outputText value="#{artikel.name}"/>
-    </h:column>
-    <h:column>
-      <f:facet name="header">Beschreibung</f:facet>
-      <h:outputText value="#{artikel.beschreibung}"/>
-    </h:column>
-    <h:column>
-      <f:facet name="header">Bild</f:facet>
-      <h:graphicImage url="#{artikel.bild}"/>
-    </h:column>
-  </h:dataTable>
-  <!--
-  <table id="artikel">
-    <tr>
-      <th>Nr</th>
-      <th>Name</th>
-      <th>Beschreibung</th>
-      <th>Bild</th>
-    </tr>
-    <tr>
-      <td class="spalte1">1</td>
-      <td>Pantoffeln "Rudolph"</td>
-      <td>Wunderschöne Filzpantoffeln</td>
-      <td><img src="filzschuhe.jpg" alt="Auf dem Bild sind Filzschuhe zu sehen."
-               width="100px" height="100px" title="Filzschuhe 'Rudolph'" /></td>
-    </tr>
-    <tr>
-      <td class="spalte1">2</td>
-      <td>Handtasche "Cosmopolita"</td>
-      <td>Modische Filz-Handtasche mit praktischer Cocktailglas-Halterung</td>
-      <td><img src="handtasche.jpg" alt="Auf dem Bild ist eine Filzhandtasche zu sehen."
-               width="100px" height="100px" title="Handtasche 'Cosmopolita'" /></td>
-    </tr>
-  </table>
-  -->
-  <p id="fussnote">Bitte beachten Sie: <br/> Diese Seite ist nur ein Entwurf!</p>
+  <h1>Ghost Net Fishing</h1>
+  <h2>Übersicht über alle Ghost Nets</h2>
+  <h:form>
+	  <h:commandButton action="#{ghostNetController.erfassen}" value="neues Ghost Net melden" />
+	  <h:commandButton action="#{ghostNetController.mapView}" value="zu bergende Ghost Nets auf Karte ansehen"/>
+	  
+	  
+	  <p/>
+	  	  
+	  <h:dataTable var="ghostnet" value="#{ghostNetDAO.ghostNets}"
+	               styleClass="artikel" rowClasses="ungerade, gerade"
+	               columnClasses="nr">
+	    <h:column>
+	      <f:facet name="header">Nr</f:facet>
+	      <h:outputText value="#{ghostnet.nr}" />
+	    </h:column>
+	    <h:column>
+	      <f:facet name="header">Standort (DD)</f:facet>
+	      <h:outputText value="#{ghostnet.standort}">
+	      	<f:converter converterId="GPSConverter"/>
+	      </h:outputText>
+	    </h:column>
+	    <h:column>
+	      <f:facet name="header">geschätzte Größe in Meter</f:facet>
+	      <h:outputText value="#{ghostnet.größe}"/>
+	    </h:column>
+	    <h:column>
+	      <f:facet name="header">Status</f:facet>
+	      <h:commandLink action="#{ghostNetController.edit(ghostnet)}" rendered="#{not ghostNetController.isDone(ghostnet)}">
+            <h:outputText value="#{ghostnet.status}">
+	      		<f:converter converterId="StatusConverter"/>
+	      	</h:outputText>
+	      </h:commandLink>
+	      <h:outputText value="#{ghostnet.status}"
+                     rendered="#{ghostNetController.isDone(ghostnet)}">
+	      	<f:converter converterId="StatusConverter"/>
+	      </h:outputText>
+	    </h:column>
+	    <h:column>
+	      <f:facet name="header">bergende Person</f:facet>
+	      <h:outputText value="#{ghostNetController.getDisplayNameBergend(ghostnet.bergendePerson)}"/>
+	    </h:column>
+	    <h:column>
+	      <f:facet name="header">gemeldet von</f:facet>
+	      <h:outputText value="#{ghostNetController.getDisplayNameMeldend(ghostnet.meldendePerson)}"/>
+	    </h:column>
+	  </h:dataTable>
+  </h:form>
+  <p id="fussnote">Bitte beachten Sie: <br/>Dies ist nur ein Prototyp!</p>
 </h:body>
 </html>

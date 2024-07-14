@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+  <link rel="stylesheet" type="text/css" media="screen" href="style.css"/>
+  <title>Ghost Net Erfassung</title>
+</h:head>
+<h:body>
+  <p><img id="kopf_links" src="ghostnet.jpg" width="250" alt="Logo"/></p>
+  <p id="kopf_rechts">
+    <h:outputText value="Christopher Schwiewager"/>
+    <br/>
+    <h:outputText value="Fallbeispiel IPWA02-01"/>
+    <br/>
+    <h:outputText value="Matrikel Nummer: 123456"/>
+  </p>
+  <h1>Ghost Net Fishing</h1>
+  <h2>neues Ghost Net erfassen</h2>
+  
+  <h:form>
+  	<h:commandButton action="#{ghostNetController.übersicht}" value="Abbrechen" immediate="true"/>
+  	
+  	
+ <p/>
+  
+  (optional: persönliche Daten eintragen)
+  
+  <h:panelGrid columns="3">
+     
+     <h:outputLabel value="Vorname: " for="vorname"/>
+     <h:inputText id="vorname" value="#{ghostNetController.meldendePerson.firstName}" size="40" validator="#{ghostNetController.validateName}"/>
+     <h:message for="vorname" style="color: red"/>
+
+     <h:outputLabel value="Nachname: " for="nachname"/>
+     <h:inputText id="nachname" value="#{ghostNetController.meldendePerson.lastName}" size="40" validator="#{ghostNetController.validateName}"/>
+     <h:message for="nachname" style="color: red"/>
+
+     <h:outputLabel value="Telefonnummer: " for="telNr"/>
+     <h:inputText id="telNr" value="#{ghostNetController.meldendePerson.telNr}" size="40" validator="#{ghostNetController.validatePhoneNumber}"/>
+     <h:message for="telNr" style="color: red"/>
+     
+    </h:panelGrid>
+    
+<p/>
+	
+    <h:panelGrid columns="3" >
+     
+      <h:outputLabel value="Nr: " for="nr"/>
+      <h:outputText id="nr" value="#{ghostNetController.createNewGhostNet()}"/>
+      <h:message for="nr" style="color: red"/>
+
+
+      <h:outputLabel value="Standort: " for="standort"/>
+      <h:inputText id="standort" value="#{ghostNetController.newGhostNet.standort}" size="40" required="true" requiredMessage="Erforderliches Feld, Zahlen mit Komma trennen." validator="#{ghostNetController.validateLocation}">
+      	<f:converter converterId="GPSConverter"/>
+	  </h:inputText>
+	  
+     <h:message for="standort" style="color: red"/>
+
+      <h:outputLabel value="geschätzte Größe in Meter: " for="größe"/>
+      <h:inputText id="größe" value="#{ghostNetController.newGhostNet.größe}" size="20" required="true" requiredMessage="Erforderliches Feld" validatorMessage="Größe muss zwischen 1 und 300 Metern liegen.">
+        <f:validateLongRange minimum="1" maximum="300"/>
+      </h:inputText>
+      <h:message for="größe" style="color: red"/>
+
+      <h:outputLabel value="Status: " for="status"/>
+      <h:outputText id="status" value="#{ghostNetController.newGhostNet.status}" size="40">
+      	<f:converter converterId="StatusConverter"/>
+      </h:outputText>
+      <h:message for="status" style="color: red"/>
+    </h:panelGrid>
+    
+    <!-- "Watermark" für leeres Standort-Feld -->
+    <p:watermark for="standort" value="0.00, 0.00" />
+    
+    <p/>
+    <h:commandButton action="#{ghostNetController.saveNewGhostNet}" value="Speichern" />
+    
+  </h:form>
+  <p id="fussnote">Bitte beachten Sie: <br/> Diese Seite ist nur ein Entwurf!</p>
+</h:body>
+</html>

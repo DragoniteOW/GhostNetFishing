@@ -10,6 +10,10 @@ h2 {
     font-size: 1.2em;
 }
 
+error {
+	color: red;
+}
+
 #kopf_links {
     float: left;
     margin: 5px;
