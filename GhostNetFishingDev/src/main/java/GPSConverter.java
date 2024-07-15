@@ -17,11 +17,17 @@ public class GPSConverter implements Converter<Object> {
     	int p=0, q=0;
         List<Double> liste = new ArrayList<>();
         while (q<s.length() && (p=s.indexOf(",", q))>-1) {
+        	try {
             liste.add(Double.parseDouble(s.substring(q,p).trim()));
+        	}
+        	catch (Exception e)
+        	{
+        		return null;
+        	}
             q = p+1;
         }
         if (p+1<s.length()) liste.add(Double.parseDouble(s.substring(q, s.length()).trim()));
-        return new GPSLocation(0, liste.get(0), liste.get(1));
+        return new GPSLocation(liste.get(0), liste.get(1));
     }
 
     

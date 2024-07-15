@@ -33,6 +33,10 @@ public class GhostNetController implements Serializable
     // swap to new entry page
     public String erfassen()
     {
+    	// we dont want any previously data to be used
+    	currentNet = null;
+    	initMeldendePerson();
+    	
     	return "erfassen.xhtml?faces-redirect=true";
     }
     
@@ -103,7 +107,7 @@ public class GhostNetController implements Serializable
     public int createNewGhostNet() 
     {
     	GhostNet n = new GhostNet();
-    	initMeldendePerson();
+    	
     	int newNr = (int)ghostNetDAO.getGhostNetCount() + 1;
     	n.setNr(newNr);
     	this.newGhostNet = n;
@@ -188,7 +192,10 @@ public class GhostNetController implements Serializable
             EntityTransaction t = ghostNetDAO.getAndBeginTransaction();
             ghostNetDAO.persist(newGhostNet);
             t.commit();
+            
+            //verhindert spätere Befüllung der Formulare
             this.meldendePerson = null;
+            this.newGhostNet = null;
     		return "index.xhtml?faces-redirect=true";
     	}
     	else

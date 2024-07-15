@@ -21,7 +21,7 @@ public class GPSLocation
 		longitude = 0;
 	}
 	
-	public GPSLocation(int nr, double alt, double lng)
+	public GPSLocation(double alt, double lng)
 	{
 		this.latitude = alt;
 		this.setLongitude(lng);

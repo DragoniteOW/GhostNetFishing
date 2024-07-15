@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
   <link rel="stylesheet" type="text/css" media="screen" href="style.css"/>
-  <title>Ghost Net Bearbeitung</title>
+  <title>Ghost Net Mapview</title>
 </h:head>
 <h:body>
   <p><img id="kopf_links" src="ghostnet.jpg" width="250" alt="Logo"/></p>
@@ -14,7 +14,7 @@
     <br/>
     <h:outputText value="Fallbeispiel IPWA02-01"/>
     <br/>
-    <h:outputText value="Matrikel Nummer: 123456"/>
+    <h:outputText value="Matrikel Nummer: 4239565"/>
   </p>
   <h1>Ghost Net Fishing</h1>
   <h:form>
@@ -31,6 +31,6 @@
             <p:ajax event="overlaySelect" listener="#{mapController.onMarkerSelect}" update="growl"/>
   </p:gmap>
   
-  <p id="fussnote">Bitte beachten Sie: <br/> Diese Seite ist nur ein Entwurf!</p>
+  <p id="fussnote">Bitte beachten Sie: <br/>Dies ist nur ein Prototyp!</p>
 </h:body>
 </html>
